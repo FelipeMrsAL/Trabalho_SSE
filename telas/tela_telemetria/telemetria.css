@@ -1,0 +1,239 @@
+/* Estilos específicos para a Tela 2 (Telemetria) */
+
+.header-actions .btn-back {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-actions .btn-back:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.telemetry-panel {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 1rem;
+}
+
+.panel-header h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Gauge (Mostrador) */
+.gauge-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+}
+
+.circular-gauge {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    /* Criando o efeito de arco (verde) - simplificado com border e conic-gradient */
+    background: conic-gradient(#1e8e3e 0deg 240deg, #e0e0e0 240deg 360deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: inset 0 0 0 15px white, 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.circular-gauge::before {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.gauge-value {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+.gauge-value .number {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1e8e3e;
+    line-height: 1;
+}
+
+.gauge-value .unit {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+/* Lista de Métricas */
+.metrics-list {
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.metric-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.metric-item:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.metric-value {
+    font-weight: 700;
+}
+
+/* Display do Cronômetro */
+.timer-display {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-display.warning-state {
+    border-color: #f29900;
+    background-color: #fffaf0;
+}
+
+.timer-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.timer-value {
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--color-in-use-text); /* Vermelho */
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.timer-alert {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-in-use-text);
+}
+
+/* Detalhes do Usuário */
+.user-details {
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Botões de Ação */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.action-buttons button {
+    padding: 1rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: white;
+    transition: filter 0.2s;
+    font-family: inherit;
+}
+
+.action-buttons button:hover {
+    filter: brightness(0.9);
+}
+
+.btn-primary { background-color: #003366; }
+.btn-danger { background-color: #d93025; }
+.btn-warning { background-color: #f29900; }
+
+/* Responsividade Mobile */
+@media (max-width: 900px) {
+    .telemetry-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .circular-gauge {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .circular-gauge::before {
+        width: 110px;
+        height: 110px;
+    }
+    
+    .gauge-value .number {
+        font-size: 2.2rem;
+    }
+
+    .timer-value {
+        font-size: 3rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}

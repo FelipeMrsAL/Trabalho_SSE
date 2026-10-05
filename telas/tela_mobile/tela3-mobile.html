@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Treino - Smart Fit App</title>
+    <link rel="stylesheet" href="../tela_dashboard/dashboard.css">
+    <link rel="stylesheet" href="mobile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="mobile-app-body">
+
+    <!-- Tela Inicial (Antes do QR Code) -->
+    <div id="scan-screen" class="screen active">
+        <div class="scan-container">
+            <i class="fa-solid fa-qrcode scan-icon"></i>
+            <h2>Iniciar Treino</h2>
+            <p>Selecione o equipamento e escaneie o QR Code localizado no painel para liberar o uso.</p>
+            
+            <div style="margin: 15px 0;">
+                <label style="font-size:0.85rem; font-weight:600; color:#555;">Equipamento:</label>
+                <select id="eq-select" style="width:100%; padding:10px; margin-top:5px; border-radius:8px; border:1px solid #ccc; font-size:0.95rem;">
+                    <option value="ESTEIRA-01">Esteira Pro 01 (ESTEIRA-01)</option>
+                    <option value="ESTEIRA-02">Esteira Pro 02 (ESTEIRA-02)</option>
+                    <option value="ESTEIRA-03">Esteira Pro 03 (ESTEIRA-03)</option>
+                    <option value="BIKE-01">Bicicleta Spinning 01 (BIKE-01)</option>
+                    <option value="BIKE-02">Bicicleta Spinning 02 (BIKE-02)</option>
+                    <option value="LEG-PRESS-01">Leg Press 45° (LEG-PRESS-01)</option>
+                </select>
+            </div>
+
+            <button class="btn-scan" onclick="simulateScan()">
+                <i class="fa-solid fa-camera"></i> ESCANEAR QR CODE E CONECTAR
+            </button>
+        </div>
+    </div>
+
+    <!-- Tela do Treino (Conectado) -->
+    <div id="training-screen" class="screen hidden">
+        <header class="app-header">
+            <h1>SMART FIT APP — TREINO</h1>
+        </header>
+
+        <main class="app-content">
+            <div class="device-header">
+                <h2 class="device-name" id="m-device-name">ESTEIRA PRO 01</h2>
+                <span class="device-subtext" id="m-device-sub">Conectado via QR Code</span>
+            </div>
+
+            <div class="timer-box">
+                <span class="timer-label">SEU TEMPO DE USO</span>
+                <span class="timer-main" id="m-timer-main">0 min</span>
+                <span class="timer-remaining" id="m-timer-rem">Restam 60 min no seu limite</span>
+            </div>
+
+            <div class="metrics-box">
+                <div class="metric-row">
+                    <span class="m-label">• Velocidade:</span>
+                    <span class="m-value" id="m-speed">0.0 km/h</span>
+                </div>
+                <div class="metric-row">
+                    <span class="m-label">• Gasto Calórico:</span>
+                    <span class="m-value" id="m-cal">0.0 kcal</span>
+                </div>
+                <div class="metric-row">
+                    <span class="m-label">• Frequência Cardíaca:</span>
+                    <span class="m-value" id="m-bpm">0 BPM</span>
+                </div>
+            </div>
+
+            <div class="actions-box">
+                <button class="btn-report" onclick="reportProblem()">
+                    <i class="fa-solid fa-triangle-exclamation"></i> REPORTAR PROBLEMA NO EQUIPAMENTO
+                </button>
+
+                <button class="btn-finish" onclick="finishWorkout()">
+                    <i class="fa-solid fa-check-circle"></i> FINALIZAR TREINO & LIBERAR EQUIPAMENTO
+                </button>
+            </div>
+
+            <div class="status-footer">
+                <span>[SSE Client: Stream Ativo]</span>
+            </div>
+        </main>
+    </div>
+
+    <script src="mobile.js"></script>
+</body>
+
+</html>

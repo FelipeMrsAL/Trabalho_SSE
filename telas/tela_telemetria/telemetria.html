@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemetria - Esteira PRO 03</title>
+    <link rel="stylesheet" href="../tela_dashboard/dashboard.css">
+    <link rel="stylesheet" href="telemetria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-title">
+            <i class="fa-solid fa-gauge-high"></i>
+            <h1 id="header-title">MONITOR DE TELEMETRIA EM TEMPO REAL — ESTEIRA PRO 03</h1>
+        </div>
+        <div class="header-actions">
+            <a href="../tela_dashboard/dashboard.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar ao Mapa Geral</a>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="telemetry-grid">
+            <!-- Painel de Sensores -->
+            <section class="telemetry-panel">
+                <div class="panel-header">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                    <h2>SENSORES DO EQUIPAMENTO</h2>
+                </div>
+
+                <div class="gauge-container">
+                    <div class="circular-gauge">
+                        <div class="gauge-value">
+                            <span class="number" id="gauge-speed">0.0</span>
+                            <span class="unit">KM/H</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metrics-list">
+                    <div class="metric-item">
+                        <span class="metric-label">• Frequência Cardíaca:</span>
+                        <span class="metric-value text-red" id="metric-bpm">0 BPM</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">• Calorias Estimadas:</span>
+                        <span class="metric-value" id="metric-calories">0.0 kcal</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">• Temperatura Motor:</span>
+                        <span class="metric-value text-green" id="metric-temp">25.0 °C (Normal)</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">• Rotações (RPM):</span>
+                        <span class="metric-value" id="metric-rpm">0 RPM</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Painel do Cronômetro -->
+            <section class="telemetry-panel">
+                <div class="panel-header">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <h2>CRONÔMETRO DE SESSÃO</h2>
+                </div>
+
+                <div class="timer-display" id="timer-display-box">
+                    <span class="timer-label">TEMPO CONTÍNUO EM USO</span>
+                    <span class="timer-value" id="timer-value">0 min</span>
+                    <span class="timer-alert" id="timer-alert" style="display:none;">[!] EXCEDE LIMITE DE 60 MIN</span>
+                </div>
+
+                <div class="user-details">
+                    <p><strong>Usuário Cadastrado:</strong> <span id="user-name">Carregando...</span></p>
+                    <p><strong>Sessão Ativa:</strong> Transmissão via SSE</p>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary" id="btn-notify">
+                        <i class="fa-solid fa-bell"></i> ENVIAR NOTIFICAÇÃO
+                    </button>
+                    <button class="btn-danger" id="btn-stop">
+                        <i class="fa-solid fa-power-off"></i> DESLIGAR MOTOR
+                    </button>
+                    <button class="btn-warning" id="btn-report">
+                        <i class="fa-solid fa-triangle-exclamation"></i> REPORTAR DEFEITO
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <script src="telemetria.js"></script>
+</body>
+
+</html>

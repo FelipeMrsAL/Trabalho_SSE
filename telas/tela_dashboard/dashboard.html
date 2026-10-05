@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fit Telemetry - Painel Geral</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-title">
+            <i class="fa-solid fa-dumbbell"></i>
+            <h1>SMART FIT TELEMETRY — RECEPÇÃO & PAINEL GERAL</h1>
+        </div>
+        <div class="header-status">
+            <i class="fa-solid fa-wifi"></i>
+            <span>STREAM SSE CONECTADO</span>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Estatísticas Gerais -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">TOTAL MÁQUINAS</span>
+                <span class="stat-value text-blue" id="stat-total">10 Equipamentos</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">EM USO AGORA</span>
+                <span class="stat-value text-red" id="stat-inuse">6 Ativas (60%)</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">LIVRES</span>
+                <span class="stat-value text-green" id="stat-free">3 Disponíveis</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">ALERTAS DE TEMPO</span>
+                <span class="stat-value text-yellow" id="stat-alerts">1 Excedidos [!]</span>
+            </div>
+        </section>
+
+        <!-- Filtros -->
+        <div class="controls">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscar por equipamento ou aluno...">
+            </div>
+            <button class="btn-filter"><i class="fa-solid fa-filter"></i> Apenas em Uso</button>
+        </div>
+
+        <div class="sectors-container">
+            <!-- Setor Cardio -->
+            <section class="sector-panel">
+                <div class="sector-header">
+                    <i class="fa-solid fa-person-running"></i>
+                    <h2>SETOR CARDIO (ESTEIRAS E BIKES)</h2>
+                </div>
+                <div class="equipment-grid" id="cardio-grid">
+                    <!-- Gerado dinamicamente via dashboard.js e SSE -->
+                </div>
+            </section>
+
+            <!-- Setor Musculação -->
+            <section class="sector-panel">
+                <div class="sector-header">
+                    <i class="fa-solid fa-dumbbell"></i>
+                    <h2>SETOR MUSCULAÇÃO & FORÇA</h2>
+                </div>
+                <div class="list-container" id="musculacao-grid">
+                    <!-- Gerado dinamicamente via dashboard.js e SSE -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

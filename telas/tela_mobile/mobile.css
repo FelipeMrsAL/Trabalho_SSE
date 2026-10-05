@@ -1,0 +1,238 @@
+/* Estilos específicos para a interface Mobile (Tela 3) */
+
+.mobile-app-body {
+    background-color: #2c3539; /* Fundo escuro para simular fora do celular em emuladores */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.screen {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    height: 100vh;
+    max-height: 850px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+/* Emulando bordas de celular em telas grandes */
+@media (min-width: 450px) {
+    .screen {
+        height: 90vh;
+        border-radius: 30px;
+        border: 8px solid #1a1a1a;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+.active {
+    display: flex !important;
+}
+
+/* Header Verde do App */
+.app-header {
+    background-color: #006633;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+.app-header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+/* Conteúdo Principal */
+.app-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+/* Cabeçalho do Equipamento */
+.device-header {
+    text-align: center;
+}
+
+.device-name {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.device-subtext {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+/* Caixa do Cronômetro */
+.timer-box {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #eaeaea;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.timer-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #666;
+}
+
+.timer-main {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #008040; /* Verde escuro */
+    line-height: 1;
+    margin: 10px 0;
+}
+
+.timer-remaining {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #008040;
+}
+
+/* Caixa de Métricas */
+.metrics-box {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #eaeaea;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.metric-row {
+    font-size: 0.95rem;
+}
+
+.m-label {
+    font-weight: 700;
+    color: #333;
+}
+
+.m-value {
+    color: #444;
+}
+
+/* Botões */
+.actions-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.btn-report {
+    background-color: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffcc80;
+    border-radius: 8px;
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-finish {
+    background-color: #008040;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 128, 64, 0.3);
+}
+
+.btn-scan {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 2rem;
+    cursor: pointer;
+}
+
+/* Rodapé */
+.status-footer {
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.status-footer span {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+/* Tela de Escanear QR Code */
+.scan-container {
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    background-color: #f8f9fa;
+}
+
+.scan-icon {
+    font-size: 5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.scan-container h2 {
+    color: #003366;
+    margin-bottom: 1rem;
+}
+
+.scan-container p {
+    color: #666;
+    line-height: 1.5;
+}
