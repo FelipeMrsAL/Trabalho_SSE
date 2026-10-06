@@ -7,25 +7,45 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// Redirecionamento da raiz para o Dashboard
 app.get('/', (req, res) => {
     res.redirect('/telas/tela_dashboard/dashboard.html');
 });
 
-const equipamentos = [
-    { id: 'ESTEIRA-01', nome: 'Esteira Pro 01', setor: 'CARDIO', status: 'LIVRE', usuario: null, tempoMinutos: 0, calorias: 0, temperaturaMotor: 25.0, alertaTempoExcedido: false, speed: 0, rpm: 0, bpm: 0 },
-    { id: 'ESTEIRA-02', nome: 'Esteira Pro 02', setor: 'CARDIO', status: 'EM_USO', usuario: 'João Silva', tempoMinutos: 20, calorias: 150, temperaturaMotor: 40.0, alertaTempoExcedido: false, speed: 8.5, rpm: 80, bpm: 120 },
-    { id: 'ESTEIRA-03', nome: 'Esteira Pro 03', setor: 'CARDIO', status: 'EM_USO', usuario: 'Maria Santos', tempoMinutos: 61, calorias: 420, temperaturaMotor: 48.0, alertaTempoExcedido: true, speed: 10.5, rpm: 100, bpm: 145 },
-    { id: 'BIKE-01', nome: 'Bicicleta Spinning 01', setor: 'SPINNING', status: 'LIVRE', usuario: null, tempoMinutos: 0, calorias: 0, temperaturaMotor: 25.0, alertaTempoExcedido: false, speed: 0, rpm: 0, bpm: 0 },
-    { id: 'BIKE-02', nome: 'Bicicleta Spinning 02', setor: 'SPINNING', status: 'EM_USO', usuario: 'Pedro Lima', tempoMinutos: 15, calorias: 110, temperaturaMotor: 32.0, alertaTempoExcedido: false, speed: 22.0, rpm: 85, bpm: 130 },
-    { id: 'ELIPTICO-01', nome: 'Elíptico 01', setor: 'CARDIO', status: 'MANUTENCAO', usuario: null, tempoMinutos: 0, calorias: 0, temperaturaMotor: 25.0, alertaTempoExcedido: false, speed: 0, rpm: 0, bpm: 0 },
-    { id: 'LEG-PRESS-01', nome: 'Leg Press 45°', setor: 'MUSCULACAO', status: 'EM_USO', usuario: 'Ana Souza', tempoMinutos: 12, calorias: 80, temperaturaMotor: 25.0, alertaTempoExcedido: false, speed: 0, rpm: 0, bpm: 115 },
-    { id: 'SUPINO-01', nome: 'Supino Reto', setor: 'MUSCULACAO', status: 'LIVRE', usuario: null, tempoMinutos: 0, calorias: 0, temperaturaMotor: 25.0, alertaTempoExcedido: false, speed: 0, rpm: 0, bpm: 0 },
-    { id: 'PUXADA-01', nome: 'Puxada Alta', setor: 'MUSCULACAO', status: 'EM_USO', usuario: 'Lucas Mendes', tempoMinutos: 34, calorias: 190, temperaturaMotor: 25.0, alertaTempoExcedido: false, speed: 0, rpm: 0, bpm: 125 },
-    { id: 'CROSS-01', nome: 'Cross Over', setor: 'MUSCULACAO', status: 'EM_USO', usuario: 'Fernanda Oliveira', tempoMinutos: 45, calorias: 240, temperaturaMotor: 25.0, alertaTempoExcedido: false, speed: 0, rpm: 0, bpm: 135 }
-];
+const fs = require('fs');
+const path = require('path');
+
+const FILE_PATH = path.join(__dirname, 'equipamentos.json');
+
+// Função para carregar equipamentos do arquivo JSON
+function carregarEquipamentos() {
+    try {
+        if (!fs.existsSync(FILE_PATH)) {
+            return [];
+        }
+        const data = fs.readFileSync(FILE_PATH, 'utf8');
+        return JSON.parse(data);
+    } catch (err) {
+        console.error('Erro ao ler equipamentos.json:', err);
+        return [];
+    }
+}
+
+// Função para salvar equipamentos no arquivo JSON
+function salvarEquipamentos(equipamentos) {
+    try {
+        fs.writeFileSync(FILE_PATH, JSON.stringify(equipamentos, null, 2), 'utf8');
+    } catch (err) {
+        console.error('Erro ao salvar equipamentos.json:', err);
+    }
+}
+
+// Base de dados em JSON dos equipamentos
+let equipamentos = carregarEquipamentos();
 
 let clients = [];
 
+// Envia eventos para todos os clientes conectados via SSE
 function sendEventToAll(eventName, data) {
     clients.forEach(client => {
         client.res.write(`event: ${eventName}\n`);
@@ -33,19 +53,21 @@ function sendEventToAll(eventName, data) {
     });
 }
 
+// Atualiza e faz broadcast da taxa de ocupação dos equipamentos
 function broadcastOcupacao() {
     const operacionais = equipamentos.filter(e => e.status !== 'MANUTENCAO');
     const total = operacionais.length;
     const emUso = operacionais.filter(e => e.status === 'EM_USO').length;
     const taxa = total === 0 ? 0 : Math.round((emUso / total) * 100);
-    
-    sendEventToAll('ocupacao_update', { 
-        taxaOcupacao: taxa, 
-        equipamentosEmUso: emUso, 
-        totalOperacionais: total 
+
+    sendEventToAll('ocupacao_update', {
+        taxaOcupacao: taxa,
+        equipamentosEmUso: emUso,
+        totalOperacionais: total
     });
 }
 
+// Formata os dados de telemetria do equipamento
 function createEqUpdatePayload(eq) {
     return {
         equipamentoId: eq.id,
@@ -64,6 +86,7 @@ function createEqUpdatePayload(eq) {
     };
 }
 
+// Endpoint SSE para streaming de telemetria em tempo real
 app.get('/api/telemetria/stream', (req, res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -72,7 +95,7 @@ app.get('/api/telemetria/stream', (req, res) => {
 
     const clientId = Date.now();
     clients.push({ id: clientId, res });
-    
+
     equipamentos.forEach(eq => {
         res.write(`event: equipamento_update\n`);
         res.write(`data: ${JSON.stringify(createEqUpdatePayload(eq))}\n\n`);
@@ -84,6 +107,7 @@ app.get('/api/telemetria/stream', (req, res) => {
     });
 });
 
+// Iniciar treino em um equipamento
 app.post('/api/equipamentos/:id/iniciar', (req, res) => {
     const eq = equipamentos.find(e => e.id === req.params.id);
     if (!eq) return res.status(404).json({ erro: 'Equipamento não encontrado' });
@@ -98,6 +122,7 @@ app.post('/api/equipamentos/:id/iniciar', (req, res) => {
 
     sendEventToAll('equipamento_update', createEqUpdatePayload(eq));
     broadcastOcupacao();
+    salvarEquipamentos(equipamentos);
 
     const now = new Date();
     res.json({
@@ -109,6 +134,7 @@ app.post('/api/equipamentos/:id/iniciar', (req, res) => {
     });
 });
 
+// Encerramento de treino e liberação do equipamento
 app.post('/api/equipamentos/:id/finalizar', (req, res) => {
     const eq = equipamentos.find(e => e.id === req.params.id);
     if (!eq) return res.status(404).json({ erro: 'Equipamento não encontrado' });
@@ -126,10 +152,12 @@ app.post('/api/equipamentos/:id/finalizar', (req, res) => {
 
     sendEventToAll('equipamento_update', createEqUpdatePayload(eq));
     broadcastOcupacao();
+    salvarEquipamentos(equipamentos);
 
     res.json({ sucesso: true, mensagem: 'Treino finalizado com sucesso. Equipamento livre.' });
 });
 
+// Bloqueio do equipamento para manutenção preventiva
 app.post('/api/equipamentos/:id/manutencao', (req, res) => {
     const eq = equipamentos.find(e => e.id === req.params.id);
     if (!eq) return res.status(404).json({ erro: 'Equipamento não encontrado' });
@@ -145,10 +173,12 @@ app.post('/api/equipamentos/:id/manutencao', (req, res) => {
 
     sendEventToAll('equipamento_update', createEqUpdatePayload(eq));
     broadcastOcupacao();
+    salvarEquipamentos(equipamentos);
 
     res.json({ sucesso: true, mensagem: 'Equipamento marcado para manutenção preventiva.' });
 });
 
+// Simulação periódica dos sensores dos equipamentos em uso
 setInterval(() => {
     equipamentos.forEach(eq => {
         if (eq.status === 'EM_USO') {
@@ -157,10 +187,11 @@ setInterval(() => {
             eq.bpm = Math.floor(Math.random() * (160 - 100) + 100);
             eq.temperaturaMotor = parseFloat((Math.random() * (50 - 35) + 35).toFixed(1));
             eq.calorias = parseFloat((eq.calorias + 0.3).toFixed(2));
-            
-            eq.ticks = (eq.ticks || 0) + 1; 
+
+            eq.ticks = (eq.ticks || 0) + 1;
             eq.tempoMinutos = eq.ticks;
 
+            // Alerta automático se o tempo em uso exceder 60 minutos
             if (eq.tempoMinutos > 60 && !eq.alertaTempoExcedido) {
                 eq.alertaTempoExcedido = true;
                 sendEventToAll('alerta_tempo', {
